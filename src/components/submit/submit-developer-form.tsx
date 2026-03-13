@@ -6,7 +6,6 @@ import { Button } from "@/components/ui/button";
 import { MultiSelect } from "@/components/ui/multiselect";
 import { CHAINS } from "@/lib/constants";
 import { Developer } from "@/types";
-import { saveDeveloperSubmission } from "@/lib/storage";
 import { useToast } from "@/components/ui/toast";
 
 export function SubmitDeveloperForm({ onSuccess }: { onSuccess: () => void }) {
@@ -39,24 +38,39 @@ export function SubmitDeveloperForm({ onSuccess }: { onSuccess: () => void }) {
         return;
     }
 
-    await new Promise(resolve => setTimeout(resolve, 1000));
+    // Post to API
+    try {
+      const newDevData = {
+        ...formData,
+        slug: formData.name.toLowerCase().replace(/\s+/g, '-'),
+        featuredProjectSlugs: [],
+        chains: formData.chains || [],
+        roles: formData.roles || [],
+        skills: formData.skills || [],
+        links: formData.links || {},
+        avatarUrl: formData.avatarUrl || "https://github.com/shadcn.png",
+      };
 
-    const newDev = {
-      ...formData,
-      slug: formData.name.toLowerCase().replace(/\s+/g, '-'),
-      featuredProjectSlugs: [],
-      // Ensure arrays
-      chains: formData.chains || [],
-      roles: formData.roles || [],
-      skills: formData.skills || [], // Simplified: skills input not fully implemented for brevity, can add later
-      links: formData.links || {},
-      avatarUrl: formData.avatarUrl || "https://github.com/shadcn.png",
-    } as Developer;
+      const res = await fetch('/api/developers', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(newDevData),
+      });
 
-    saveDeveloperSubmission(newDev);
-    toast({ title: "Success", description: "Developer profile saved locally!", type: "success" });
-    onSuccess();
-    setLoading(false);
+      if (!res.ok) {
+        const errorData = await res.json();
+        throw new Error(errorData.error || 'Failed to submit profile');
+      }
+
+      toast({ title: "Success", description: "Developer profile submitted successfully!", type: "success" });
+      setFormData({ chains: [], roles: [], skills: [], links: {} });
+      onSuccess();
+    } catch (err: any) {
+      console.error("Submission error", err);
+      toast({ title: "Error", description: err.message, type: "error" });
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -109,11 +123,35 @@ export function SubmitDeveloperForm({ onSuccess }: { onSuccess: () => void }) {
            />
         </div>
         
-        <Input 
-           label="Avatar URL" 
-           value={formData.avatarUrl || ""} 
-           onChange={e => setFormData({...formData, avatarUrl: e.target.value})}
-        />
+        <div className="grid sm:grid-cols-2 gap-4">
+           <Input 
+              label="Website" 
+              value={formData.links?.website || ""} 
+              onChange={e => setFormData({...formData, links: { ...formData.links, website: e.target.value }})}
+              placeholder="https://xyz.com"
+           />
+           <Input 
+              label="GitHub" 
+              value={formData.links?.github || ""} 
+              onChange={e => setFormData({...formData, links: { ...formData.links, github: e.target.value }})}
+              placeholder="https://github.com/..."
+           />
+        </div>
+
+        <div className="grid sm:grid-cols-2 gap-4">
+           <Input 
+              label="Twitter (X)" 
+              value={formData.links?.twitter || ""} 
+              onChange={e => setFormData({...formData, links: { ...formData.links, twitter: e.target.value }})}
+              placeholder="https://twitter.com/..."
+           />
+           <Input 
+              label="Avatar URL" 
+              value={formData.avatarUrl || ""} 
+              onChange={e => setFormData({...formData, avatarUrl: e.target.value})}
+              placeholder="https://..."
+           />
+        </div>
       </div>
 
       <Button type="submit" disabled={loading} className="w-full">

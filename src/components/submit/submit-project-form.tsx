@@ -5,9 +5,8 @@ import { Input } from "@/components/ui/input";
 import { Select } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import { MultiSelect } from "@/components/ui/multiselect";
-import { CHAINS, PROJECT_TYPES, PROJECT_STATUS, INITIAL_TAGS } from "@/lib/constants";
+import { PROJECT_TYPES, PROJECT_STATUS, INITIAL_TAGS, CHAINS } from "@/lib/constants";
 import { Project } from "@/types";
-import { saveProjectSubmission } from "@/lib/storage";
 import { useToast } from "@/components/ui/toast";
 import { developers } from "@/data/developers";
 
@@ -33,27 +32,41 @@ export function SubmitProjectForm({ onSuccess }: { onSuccess: () => void }) {
         return;
     }
 
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 1000));
+    // Post to API
+    try {
+      const newProjectData = {
+        ...formData,
+        slug: formData.name.toLowerCase().replace(/\s+/g, '-'),
+        status: "coming_soon",
+        createdAt: new Date().toISOString(),
+        chains: formData.chains || [],
+        types: formData.types || (formData.type ? [formData.type] : []),
+        tags: formData.tags || [],
+        devSlugs: formData.devSlugs || [],
+        links: formData.links || {},
+        media: formData.media || { coverUrl: "" },
+      };
 
-    const newProject = {
-      ...formData,
-      slug: formData.name.toLowerCase().replace(/\s+/g, '-'),
-      status: "coming_soon", // Default for submissions
-      createdAt: new Date().toISOString(),
-      // Ensure required arrays are present
-      chains: formData.chains || [],
-      types: formData.types || (formData.type ? [formData.type] : []),
-      tags: formData.tags || [],
-      devSlugs: formData.devSlugs || [],
-      links: formData.links || {},
-      media: formData.media || { coverUrl: "" },
-    } as Project;
+      const res = await fetch('/api/projects', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(newProjectData),
+      });
 
-    saveProjectSubmission(newProject);
-    toast({ title: "Success", description: "Project draft saved locally!", type: "success" });
-    onSuccess();
-    setLoading(false);
+      if (!res.ok) {
+        const errorData = await res.json();
+        throw new Error(errorData.error || 'Failed to submit project');
+      }
+
+      toast({ title: "Success", description: "Project submitted successfully!", type: "success" });
+      setFormData({ chains: [], types: [], tags: [], devSlugs: [], media: { coverUrl: "" } });
+      onSuccess();
+    } catch (err: any) {
+      console.error("Submission error", err);
+      toast({ title: "Error", description: err.message, type: "error" });
+    } finally {
+      setLoading(false);
+    }
   };
 
   const devOptions = developers.map(d => ({ label: d.name, value: d.slug }));
@@ -115,12 +128,35 @@ export function SubmitProjectForm({ onSuccess }: { onSuccess: () => void }) {
            />
         </div>
 
-        <Input 
-           label="Cover Image URL" 
-           value={formData.media?.coverUrl || ""} 
-           onChange={e => setFormData({...formData, media: { ...formData.media, coverUrl: e.target.value }})}
-           placeholder="https://..."
-        />
+        <div className="grid sm:grid-cols-2 gap-4">
+           <Input 
+              label="Live URL" 
+              value={formData.links?.liveUrl || ""} 
+              onChange={e => setFormData({...formData, links: { ...formData.links, liveUrl: e.target.value }})}
+              placeholder="https://app.xyz"
+           />
+           <Input 
+              label="Website" 
+              value={formData.links?.website || ""} 
+              onChange={e => setFormData({...formData, links: { ...formData.links, website: e.target.value }})}
+              placeholder="https://xyz.com"
+           />
+        </div>
+
+        <div className="grid sm:grid-cols-2 gap-4">
+          <Input 
+             label="GitHub URL" 
+             value={formData.links?.github || ""} 
+             onChange={e => setFormData({...formData, links: { ...formData.links, github: e.target.value }})}
+             placeholder="https://github.com/..."
+          />
+          <Input 
+             label="Cover Image URL" 
+             value={formData.media?.coverUrl || ""} 
+             onChange={e => setFormData({...formData, media: { ...formData.media, coverUrl: e.target.value }})}
+             placeholder="https://..."
+          />
+        </div>
       </div>
 
       <Button type="submit" disabled={loading} className="w-full">

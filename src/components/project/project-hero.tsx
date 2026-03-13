@@ -11,9 +11,12 @@ interface ProjectHeroProps {
 }
 
 export function ProjectHero({ project }: ProjectHeroProps) {
-  const projectDevs = developers
-    .filter((d) => project.devSlugs.includes(d.slug))
-    .map((d) => ({ src: d.avatarUrl, alt: d.name }));
+  const projectDevs = (project.devSlugs || [])
+    .filter((slug) => developers.some(d => d.slug === slug))
+    .map((slug) => {
+      const d = developers.find(dev => dev.slug === slug)!;
+      return { src: d.avatarUrl, alt: d.name };
+    });
 
   return (
     <div className="space-y-8">
@@ -91,12 +94,14 @@ export function ProjectHero({ project }: ProjectHeroProps) {
             <h3 className="text-sm font-semibold mb-4 text-text-2 uppercase tracking-wide">Builders</h3>
             <div className="flex items-center justify-between mb-4">
                <AvatarStack avatars={projectDevs} />
-               <Link href={`/developers/${project.devSlugs[0]}`} className="text-xs text-gold hover:underline">
-                  View Profiles
-               </Link>
+               {(project.devSlugs || []).length > 0 && (
+                 <Link href={`/developers/${project.devSlugs[0]}`} className="text-xs text-gold hover:underline">
+                    View Profiles
+                 </Link>
+               )}
             </div>
             <div className="space-y-2">
-               {project.devSlugs.map(slug => {
+               {(project.devSlugs || []).map(slug => {
                   const dev = developers.find(d => d.slug === slug);
                   return dev ? (
                     <Link key={slug} href={`/developers/${slug}`} className="block group">

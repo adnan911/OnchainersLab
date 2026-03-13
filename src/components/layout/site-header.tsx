@@ -11,7 +11,7 @@ export function SiteHeader() {
           </Link>
           <nav className="hidden md:flex items-center gap-6 text-sm font-medium text-text-2">
             <Link href="/marketplace" className="hover:text-gold transition-colors">
-              Marketplace
+              Lab Store
             </Link>
             <Link href="/developers" className="hover:text-gold transition-colors">
               Developers
@@ -30,7 +30,7 @@ export function SiteHeader() {
              <Button variant="ghost" size="sm">Join Community</Button>
           </Link>
           <Link href="/marketplace">
-            <Button size="sm">Explore Marketplace</Button>
+            <Button size="sm">Explore Lab Store</Button>
           </Link>
         </div>
       </div>

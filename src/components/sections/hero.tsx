@@ -12,9 +12,9 @@ export function Hero() {
       <div className="container px-4 sm:px-6 lg:px-8 mx-auto max-w-[1200px] relative z-10">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           <div className="space-y-8 text-center lg:text-left">
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold font-display tracking-tight text-white leading-[1.1]">
-              OnChainers Lab
-            </h1>
+            <h1 className="text-4xl md:text-6xl font-black font-display text-white mb-6 leading-tight">
+          The <span className="text-gold">Lab Store</span> for <br /> Onchain Creators
+        </h1>
             <p className="text-lg sm:text-xl text-text-2 max-w-2xl mx-auto lg:mx-0 leading-relaxed">
               Premium onchain games & tools — built for Solana and Base.
               <span className="block mt-2 text-text-3 text-base">
@@ -23,7 +23,7 @@ export function Hero() {
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
                <Link href="/marketplace">
-                <Button size="lg" className="w-full sm:w-auto px-8">Explor Marketplace</Button>
+                <Button size="lg" className="w-full sm:w-auto px-8">Explore Lab Store</Button>
                </Link>
                <Link href="/community">
                 <Button variant="secondary" size="lg" className="w-full sm:w-auto px-8">Join Community</Button>

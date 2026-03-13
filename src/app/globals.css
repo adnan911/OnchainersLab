@@ -4,8 +4,7 @@
 
 @layer base {
   :root {
-    --font-display: var(--font-display);
-    --font-ui: var(--font-ui);
+    --bg-0: #07080b;
 
     --bg-0: #07080b;
     --bg-1: #0b0d12;

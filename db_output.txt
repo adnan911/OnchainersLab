@@ -1,0 +1,11 @@
+[dotenv@17.3.1] injecting env (2) from .env.local -- tip: ΓÜÖ∩╕Å  enable debug logging with { debug: true }
+--- DB DEBUG START ---
+Projects Count: 2 [
+  { slug: 'bloom', approved: true },
+  { slug: 'pixel-mint', approved: true }
+]
+Developers Count: 2 [
+  { slug: 'adnan', approved: true },
+  { slug: 'hotpunk', approved: true }
+]
+--- DB DEBUG END ---

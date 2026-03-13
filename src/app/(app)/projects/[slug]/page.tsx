@@ -30,7 +30,7 @@ export default function ProjectPage({ params }: PageProps) {
       <ProjectHero project={project} />
       
       {/* Media Gallery (Optional: if screenshots exist) */}
-      {project.media.screenshots && project.media.screenshots.length > 0 && (
+      {project.media?.screenshots && project.media.screenshots.length > 0 && (
          <div className="mt-12 space-y-6">
             <h2 className="text-2xl font-bold font-display tracking-tight text-white">Gallery</h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">

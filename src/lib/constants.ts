@@ -20,6 +20,12 @@ export const SORT_OPTIONS = [
   { label: "Trending", value: "trending" },
 ] as const;
 
+export const NAV_ITEMS = [
+  { label: "Lab Store", href: "/marketplace" },
+  { label: "Submit", href: "/submit" },
+  { label: "Community", href: "/community" },
+] as const;
+
 export const INITIAL_TAGS = [
   "DeFi",
   "NFT",

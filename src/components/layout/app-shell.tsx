@@ -10,7 +10,7 @@ import { Drawer } from "@/components/ui/drawer";
 import { useMediaQuery } from "@/hooks/use-media-query";
 
 const NAV_ITEMS = [
-  { href: "/marketplace", label: "Marketplace", icon: LayoutGrid },
+  { href: "/marketplace", label: "Lab Store", icon: LayoutGrid },
   { href: "/developers", label: "Developers", icon: Users },
   { href: "/submit", label: "Submit", icon: Upload },
   { href: "/community", label: "Community", icon: MessageSquare },

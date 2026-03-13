@@ -38,7 +38,7 @@ export function ProjectCard({ project }: ProjectCardProps) {
           <Badge variant="chain" className="mb-2 capitalize">{project.chains.join(", ")}</Badge>
         </div>
         
-        <h3 className="text-lg font-bold font-display tracking-tight mb-1 group-hover:text-gold transition-colors">
+        <h3 className="relative text-lg font-bold font-display tracking-tight mb-1 group-hover:text-gold transition-colors">
           <Link href={`/projects/${project.slug}`} className="focus:outline-none">
             <span className="absolute inset-0" aria-hidden="true" />
             {project.name}

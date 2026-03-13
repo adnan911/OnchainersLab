@@ -8,8 +8,16 @@ export function SiteFooter() {
            <div>
             <h3 className="text-sm font-semibold text-text-1 mb-4">Explore</h3>
             <ul className="space-y-2 text-sm text-text-2">
-              <li><Link href="/marketplace" className="hover:text-gold">Marketplace</Link></li>
-              <li><Link href="/developers" className="hover:text-gold">Developers</Link></li>
+              <li>
+                <Link href="/marketplace" className="hover:text-gold transition-colors">
+                  Lab Store
+                </Link>
+              </li>
+              <li>
+                <Link href="/developers" className="hover:text-gold transition-colors">
+                  Developers
+                </Link>
+              </li>
             </ul>
            </div>
            <div>

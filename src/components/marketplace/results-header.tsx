@@ -14,7 +14,7 @@ export function ResultsHeader({ count, sort, onSortChange, onFilterClick }: Resu
   return (
     <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-white/10 pb-6 mb-6">
       <div className="flex items-center gap-2">
-         <h1 className="text-2xl font-bold font-display tracking-tight text-white">Marketplace</h1>
+         <h1 className="text-2xl font-bold font-display tracking-tight text-white">Lab Store</h1>
          <span className="text-sm text-text-3 font-medium bg-surface px-2 py-0.5 rounded-full border border-white/5">
             {count}
          </span>
